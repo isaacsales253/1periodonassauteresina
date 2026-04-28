@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Manchete da Invisibilidade</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #E8C547;
+      --dark-navy: #0D1B2A;
+      --mid-navy: #1A2F45;
+      --card-bg: #162033;
+      --text: #E8EEF4;
+      --muted: #8BA3BC;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark-navy);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(13,27,42,0.3) 0%, rgba(13,27,42,0.85) 60%, var(--dark-navy) 100%),
+        url('foto.jpg') center/cover no-repeat;
+    }
+
+    /* Fallback artistic overlay when no image */
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 40%, rgba(26,47,69,0.8) 0%, transparent 70%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 860px;
+      padding: 0 2rem 5rem;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-label {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--dark-navy);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 span { color: var(--gold); }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 560px;
+      font-weight: 300;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+
+    .scroll-hint svg { width: 20px; opacity: .6; }
+
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      padding: 5rem 2rem;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── BANNER DESTAQUE ── */
+    .banner {
+      background: var(--gold);
+      color: var(--dark-navy);
+      padding: 0;
+    }
+
+    .banner-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.2rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .banner-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+
+    .banner p {
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.3;
+    }
+
+    /* ── ANÁLISE ── */
+    .analise p {
+      font-size: 1.08rem;
+      color: #c8d8e8;
+      margin-bottom: 1.2rem;
+      font-weight: 300;
+    }
+
+    .analise p strong {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* ── ALERT CARD ── */
+    .alert-card {
+      background: var(--mid-navy);
+      border-left: 4px solid var(--gold);
+      border-radius: 4px;
+      padding: 1.4rem 1.6rem;
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .alert-card .icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+    .alert-card p {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text) !important;
+      margin: 0 !important;
+      line-height: 1.4;
+    }
+
+    /* ── FUNDAMENTOS ── */
+    .fundamentos { background: var(--mid-navy); }
+
+    .law-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+
+    .law-card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.6rem;
+      border-top: 3px solid var(--gold);
+      transition: transform 0.2s;
+    }
+
+    .law-card:hover { transform: translateY(-3px); }
+
+    .law-card .badge {
+      display: inline-block;
+      background: rgba(232,197,71,0.15);
+      color: var(--gold);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.7rem;
+      border-radius: 20px;
+      margin-bottom: 0.8rem;
+    }
+
+    .law-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .law-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── ESTATÍSTICAS ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2.5rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.8rem 1.4rem;
+      text-align: center;
+    }
+
+    .stat-card .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-card .label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+      line-height: 1.4;
+    }
+
+    /* ── DIVISOR ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(232,197,71,0.3), transparent);
+      margin: 0 2rem;
+    }
+
+    /* ── EQUIPE ── */
+    .team-section { background: var(--dark-navy); }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+
+    @media (max-width: 580px) {
+      .team-grid { grid-template-columns: 1fr; }
+    }
+
+    .team-group h3 {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(232,197,71,0.2);
+    }
+
+    .team-group ul {
+      list-style: none;
+    }
+
+    .team-group ul li {
+      font-size: 0.95rem;
+      color: var(--muted);
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: color 0.2s;
+    }
+
+    .team-group ul li:hover { color: var(--text); }
+
+    .team-group.orientadores li {
+      font-weight: 500;
+      color: #b0c8e0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #070f18;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: #4a6070;
+    }
+
+    footer span { color: var(--gold); }
+
+    /* ── PHOTO SECTION ── */
+    .photo-section {
+      background: var(--dark-navy);
+      padding: 4rem 2rem;
+    }
+
+    .photo-frame {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .photo-frame img {
+      width: 100%;
+      display: block;
+      max-height: 520px;
+      object-fit: cover;
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      height: 360px;
+      background: linear-gradient(135deg, var(--mid-navy) 0%, #0f2035 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      color: var(--muted);
+    }
+
+    .photo-placeholder svg { width: 48px; opacity: 0.4; }
+    .photo-placeholder p { font-size: 0.85rem; opacity: 0.5; }
+
+    .photo-caption {
+      padding: 1.2rem 1.6rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ── ANIMATE ON SCROLL ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ HERO ═══════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content fade-in">
+    <div class="hero-label">Trabalho Acadêmico · Direito</div>
+    <h1>A Manchete da<br><span>Invisibilidade</span></h1>
+    <p class="hero-sub">
+      Desigualdade social, dignidade humana e o direito à moradia sob a ótica jurídica e social —
+      registrado no bairro Parque Piauí, Teresina.
+    </p>
+  </div>
+  <div class="scroll-hint">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+    Explorar
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ BANNER ═══════════════════════════════════ -->
+<div class="banner">
+  <div class="banner-inner">
+    <div class="banner-icon">📰</div>
+    <p>Por trás de cada página, existe uma história.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ FOTO ═══════════════════════════════════ -->
+<div class="photo-section">
+  <div class="photo-frame fade-in">
+    <img src="foto.jpg" alt="Cidadão dormindo em banco público no Parque Piauí, Teresina"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+    <div class="photo-placeholder" style="display:none;">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+      </svg>
+      <p>Adicione foto.jpg nesta pasta para exibir a fotografia</p>
+    </div>
+    <p class="photo-caption">
+      Parque Piauí, Teresina — Cidadão utilizando banco público para repouso e leitura, simbolizando a invisibilidade social e a privação de direitos fundamentais.
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ ANÁLISE ═══════════════════════════════════ -->
+<section class="analise">
+  <div class="container fade-in">
+    <div class="section-label">Análise</div>
+    <h2>A Face Nua da Desigualdade</h2>
+
+    <p>
+      A fotografia, registrada no bairro <strong>Parque Piauí em Teresina</strong>, retrata a face nua da desigualdade
+      social e a vulnerabilidade da população em situação de rua. O cidadão, ao utilizar um banco público para
+      o repouso e a leitura, evidencia a privação de direitos fundamentais básicos, como a <strong>moradia digna</strong>
+      e a intimidade.
+    </p>
+
+    <p>
+      Sob a ótica jurídica, a cena revela o abismo entre a norma constitucional e a realidade prática, onde
+      a <strong>dignidade da pessoa humana</strong> é mitigada pela exclusão extrema.
+    </p>
+
+    <p>
+      A busca por informação em meio à precariedade ressalta a <strong>resiliência do cidadão</strong> frente à
+      invisibilidade social e à urgência de políticas públicas eficazes.
+    </p>
+
+    <div class="alert-card">
+      <div class="icon">⚠️</div>
+      <p>Moradia digna não é privilégio. É direito. É dignidade. É respeito.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════ ESTATÍSTICAS ═══════════════════════════════════ -->
+<section>
+  <div class="container fade-in">
+    <div class="section-label">Contexto</div>
+    <h2>Números que não podem ser ignorados</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="num">281k</div>
+        <div class="label">Pessoas em situação de rua no Brasil (IBGE 2022)</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">Art. 6º</div>
+        <div class="label">CF/88 garante moradia como direito social fundamental</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">1948</div>
+        <div class="label">Declaração Universal dos Direitos Humanos proclamada pela ONU</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">0</div>
+        <div class="label">Motivos para ignorar a crise habitacional brasileira</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ FUNDAMENTAÇÃO ═══════════════════════════════════ -->
+<section class="fundamentos">
+  <div class="container fade-in">
+    <div class="section-label">Fundamentação Jurídica</div>
+    <h2>O que diz a lei?</h2>
+    <div class="law-grid">
+
+      <div class="law-card">
+        <div class="badge">Constituição Federal · 1988</div>
+        <h3>Art. 1º, III — Princípio da Dignidade Humana</h3>
+        <p>
+          Fundamento da República Federativa do Brasil. Nenhum ser humano pode ser tratado como
+          invisível ou destituído de valor intrínseco, independente de sua condição social.
+        </p>
+      </div>
+
+      <div class="law-card">
+        <div class="badge">Constituição Federal · 1988</div>
+        <h3>Art. 6º — Direito Social à Moradia</h3>
+        <p>
+          A moradia é direito social garantido constitucionalmente. Sua ausência representa uma
+          falha sistêmica do Estado em proteger seus cidadãos mais vulneráveis.
+        </p>
+      </div>
+
+      <div class="law-card">
+        <div class="badge">Declaração Universal · 1948</div>
+        <h3>Art. XXV — Padrão de Vida Digno</h3>
+        <p>
+          Todo ser humano tem direito a um padrão de vida capaz de assegurar-lhe saúde, bem-estar,
+          alimentação, vestuário, habitação e cuidados médicos necessários.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ EQUIPE ═══════════════════════════════════ -->
+<section class="team-section">
+  <div class="container fade-in">
+    <div class="section-label">Equipe</div>
+    <h2>Quem produziu este trabalho</h2>
+    <div class="team-grid">
+
+      <div class="team-group">
+        <h3>Alunos(as)</h3>
+        <ul>
+          <li>Antonia Rodrigues</li>
+          <li>Brenda Melo</li>
+          <li>Bleydson Moraes</li>
+          <li>Celso Nunes</li>
+          <li>Maria Emanuelly</li>
+          <li>Ozailde Leal</li>
+          <li>Sâmyra Keila</li>
+        </ul>
+      </div>
+
+      <div class="team-group orientadores">
+        <h3>Orientadores</h3>
+        <ul>
+          <li>Profº. Me. Carlos Amorim</li>
+          <li>Profª. Dra. Eliana Freire</li>
+          <li>Profª. Fabíola Albuquerque</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ FOOTER ═══════════════════════════════════ -->
+<footer>
+  <p><span>A Manchete da Invisibilidade</span> · Trabalho Acadêmico · Direito · Teresina, Piauí</p>
+  <p style="margin-top:0.4rem;">Moradia digna não é privilégio — é direito, é dignidade, é respeito.</p>
+</footer>
+
+<script>
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Hero fade-in immediately
+  document.querySelector('.hero .fade-in').classList.add('visible');
+</script>
+</body>
+</html>
